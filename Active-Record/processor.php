@@ -1,7 +1,7 @@
 <?php
 include './Classes/class-dao.php';
 
-if ($_SERVER['REQUEST_METHOD'] === "POST"){
+if ($_SERVER['REQUEST_METHOD'] === "POST" && $_POST['action'] === "login"){
     $username = $_POST['email'] ?? '';
     $password = $_POST['pass'] ?? '';
 
@@ -22,5 +22,11 @@ if ($_SERVER['REQUEST_METHOD'] === "POST"){
 
 
 }
+
+if ($_SERVER['REQUEST_METHOD'] === "POST" && $_POST['action'] === "logout"){
+    session_unset();
+    
+}
+
 
 ?>

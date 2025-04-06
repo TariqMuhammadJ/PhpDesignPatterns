@@ -10,7 +10,7 @@ document.getElementById("login-form-real").addEventListener("submit", function(e
     fetch("processor.php", {
         method: "POST", 
         headers:{'Content-Type': "application/x-www-form-urlencoded"},
-        body: "email="+encodeURIComponent(email)+"&pass="+encodeURIComponent(pass)
+        body: "action=login&email="+encodeURIComponent(email)+"&pass="+encodeURIComponent(pass)
 
 
     })
