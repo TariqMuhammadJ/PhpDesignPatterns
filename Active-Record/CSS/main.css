@@ -67,74 +67,6 @@ body {
     overflow: scroll;
 }
 
-.top-bar{
-    display: flex;
-    background-color: var(--main-bg);
-    width:100%;
-    height:6vw;
-    padding:1vw;
-}
-
-.drop-down{
-    z-index: 1;
-    height: min-content;
-    border:1px solid var(--primary-color);
-}
-
-.drop-down .circle{
-    width:4vw;
-    height:4vw;
-    border-radius:50%;
-
-}
-
-
-.drop-down ul {
-    display: block;
-    background-color:var(--main-bg);
-    list-style-type: none;
-    padding-left:0vw;
-    color:black;
-
-}
-
-.drop-down ul li button{
-    width:100%;
-    height:100%;
-    text-align: left;
-    padding:0.5vw 0.5vw;
-    background-color: var(--note-hover);
-}
-
-.drop-down ul li button:hover{
-    background-color: #1a56ce;
-    color:white;
-    cursor: pointer;
-
-}
-
-
-.drop-down li:hover:not(:first-child){
-    background-color: var(--primary-color); 
-    cursor: pointer;
-    color:white;
-
-}
-
-.drop-down ul li{
-    padding:0.5vw 1vw;
-}
-
-.drop-down ul li:not(:last-child){
-    border-bottom:1px solid rgba(83, 59, 59, 0.744);
-}
-
-
-.circle{
-    width:100%;
-    background-color: #10b981;
-    height:20vw;
-}
 /* App Container */
 .app-container {
     display: flex;
@@ -403,7 +335,7 @@ body {
 /* Main Content Styles */
 .main-content {
     flex: 1;
-    display: flex;
+    display: none;
     flex-direction: column;
     background-color: var(--main-bg);
     overflow: hidden;
@@ -537,4 +469,29 @@ body {
     .note-title-input {
         font-size: var(--font-size-xl);
     }
+}
+
+.note-lists{
+    flex:1; 
+    display: flex;
+    flex-direction: column;
+    background-color: var(--main-bg);
+    overflow: hidden;
+    padding:2vw 2vw;
+}
+
+.note-lists ul {
+    padding:2vw 2vw;
+
+}
+
+.note-lists ul li{
+    background-color: var(--note-bg);
+    border-radius:var(--border-radius-lg);
+    padding:2vw 2vw;
+
+}
+
+.note-lists ul li:hover {
+    background-color: var(--note-hover);
 }

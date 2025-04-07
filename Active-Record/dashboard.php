@@ -1,6 +1,5 @@
 <?php
 session_start();
-
 if (isset($_SESSION['user'])) {
     $user_name;
     $user_id;
@@ -20,6 +19,7 @@ if (isset($_SESSION['user'])) {
     
 
 } else {
+    session_start();
     session_unset();
     session_destroy();
     header('Location: index.php');
@@ -39,23 +39,12 @@ if (isset($_SESSION['user'])) {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="top-bar">
-        <div class="drop-down">
-            <ul>
-                <li> <div class="circle"></div></li>
-                <li><?php echo $user_name?></li>
-                <li><?php echo $user_id?></li>
-                <li>Settings</li>
-                <li class="log-out"><button class="logout-btn" id="logout-btn">Logout</button></li>
-            </ul>
-        </div>
-    </div>
     <div class="app-container">
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="sidebar-header">
                 <h1 class="app-title">Notely</h1>
-                <button class="new-note-btn">
+                <button class="new-note-btn" id="new-note-btn">
                     <i class="fas fa-plus"></i>
                     <span>New Note</span>
                 </button>
@@ -71,7 +60,7 @@ if (isset($_SESSION['user'])) {
             <nav class="folders-nav">
                 <h2 class="sidebar-section-title">Folders</h2>
                 <ul class="folders-list">
-                    <li class="folder-item active">
+                    <li class="folder-item active" id="all-notes">
                         <i class="fas fa-book-open"></i>
                         <span>All Notes</span>
                         <span class="note-count">12</span>
@@ -144,7 +133,7 @@ if (isset($_SESSION['user'])) {
                 <div class="user-info">
                     <div class="user-avatar">JS</div>
                     <div class="user-details">
-                        <span class="user-name">John Smith</span>
+                        <span class="user-name"><?php echo $user_name ?></span>
                         <span class="account-type">Free Account</span>
                     </div>
                 </div>
@@ -155,7 +144,7 @@ if (isset($_SESSION['user'])) {
         </aside>
 
         <!-- Main Content Area -->
-        <main class="main-content">
+        <main class="main-content" id="main-content">
             <header class="note-header">
                 <div class="note-actions">
                     <button class="action-btn favorite-btn">
@@ -167,64 +156,40 @@ if (isset($_SESSION['user'])) {
                     <button class="action-btn delete-btn">
                         <i class="far fa-trash-alt"></i>
                     </button>
+                    <button class="action-btn save-btn" id="save-button">
+                        <i class="fas fa-save"></i>
+                    </button>
                 </div>
                 <div class="note-info">
-                    <span class="note-edited">Edited: Today at 2:45 PM</span>
+                    <span class="note-edited" id="note-edited">Edited: Today at 2:45 PM</span>
                 </div>
             </header>
 
             <div class="note-editor">
-                <input type="text" class="note-title-input" value="Project Ideas" placeholder="Note title">
+                <input type="text" class="note-title-input"  placeholder="Note title" id="note-title">
                 <div class="note-content-area">
-                    <textarea class="note-content" placeholder="Start writing your notes here..."># Brainstorming Session for Upcoming Web Development Projects
-
-## Website Redesign Project
-- Modern, minimalist aesthetic
-- Responsive design for all devices
-- Improved navigation structure
-- Performance optimization
-- Accessibility improvements
-
-## Mobile App Ideas
-1. Task management application
-   - Simple, clean interface
-   - Daily/weekly views
-   - Priority levels for tasks
-   - Reminder notifications
-   - Progress tracking
-
-2. Recipe finder app
-   - Search by ingredients
-   - Dietary preference filters
-   - Save favorite recipes
-   - Meal planning integration
-   - Nutritional information
-
-## E-commerce Enhancements
-- Product recommendation engine
-- Customer review system
-- Streamlined checkout process
-- Inventory management integration
-- Analytics dashboard
-
-## Learning Platform Features
-- Interactive coding exercises
-- Progress tracking for students
-- Certificate generation
-- Discussion forums
-- Video lecture integration
-
-## Things to Research:
-- Latest CSS frameworks
-- Performance optimization techniques
-- Authentication best practices
-- Serverless architecture
-- Micro-frontend approach
-</textarea>
+                    <textarea class="note-content" placeholder="Start writing your notes here..." id="note-content">
+                    </textarea>
                 </div>
             </div>
         </main>
+        <div class="note-lists" id="note-lists">
+            <ul class="notes-list">
+                <li>
+                    <h1>Yes I love notes</h1>
+                    <p>Do you love notes?</p>
+                    <span class="note-date">Today at 4:30 pm</span>
+
+                </li>
+                <li>
+                    <h1>How are you doing</h1>
+                    <p>I'm doing well</p>
+                    <span class="note-date">Today at 4:30 pm</span>
+                </li>
+            </ul>
+                    
+        </div>
     </div>
-    <script src="./JS/logout.js"></script>
+    <script src="./JS/user_controller.js"></script>
 </body>
 </html>

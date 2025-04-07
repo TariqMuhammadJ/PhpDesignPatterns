@@ -1,8 +1,9 @@
 <?php 
 
 if (isset($_SESSION['user'])){
-    header('Location: dashboard.php');
-    exit;
+    session_start();
+    session_unset();
+    session_destroy();
 
 }
 
