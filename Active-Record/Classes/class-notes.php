@@ -2,14 +2,16 @@
 include 'class-dao.php';
 
 class Notes{
+    private $note_id;
     private $note_title;
     private $note_content;
     private $note_creation;
     private $note_edit_date;
     private $user_id;
 
-    public function __construct($note_title, $note_content, $note_creation, $user_id)
-    {
+    public function __construct($note_id,$note_title, $note_content, $note_creation, $user_id)
+    {   
+        $this->note_id = $note_id;
         $this->note_title = $note_title;
         $this->note_content = $note_content;
         $this->note_creation = $note_creation;
@@ -23,11 +25,11 @@ class Notes{
         $pdo = DAO::getInstance();
     
         // Prepare the SQL query with the correct syntax
-        $stmt = $pdo->prepare("INSERT INTO notes (note_title, note_content, note_created, user_id) VALUES (?, ?, ?, ?)");
+        $stmt = $pdo->prepare("INSERT INTO notes (note_id, note_title, note_content, note_created, user_id) VALUES (?, ?, ?, ?, ?)");
     
     
         // Execute the statement with the class variables
-        $stmt->execute([$this->note_title, $this->note_content, $this->note_creation, $this->user_id]);
+        $stmt->execute([$this->note_id, $this->note_title, $this->note_content, $this->note_creation, $this->user_id]);
     
         // Optionally, check if the query was successful
         if ($stmt->rowCount() > 0) {
@@ -37,6 +39,20 @@ class Notes{
             echo "Failed to create note.";
             return false;
         }
+    }
+
+    public static function updateNote($note_id, $note_title, $note_content){
+        $pdo = DAO::getInstance();
+        try{
+            $sql = "UPDATE notes SET note_title = ?, note_content = ?, note_edited = NOW() WHERE note_id = ?";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$note_title, $note_content, $note_id]);
+            echo "note executed successfully";
+
+        } catch (PDOException $e){
+            echo "Error: " . $e->getMessage();
+        }
+
     }
     
 
@@ -55,7 +71,7 @@ class Notes{
         $notes = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
         // Return the notes
-        return $notes;
+        return json_encode($notes);
     }
     
     

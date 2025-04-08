@@ -277,6 +277,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position:relative;
 }
 
 .user-info {
@@ -494,4 +495,13 @@ body {
 
 .note-lists ul li:hover {
     background-color: var(--note-hover);
+}
+
+
+.settings-up{
+    position:absolute;
+    top:-100%;
+    right:0;
+    width: auto;
+    border:2px solid black;
 }

@@ -140,6 +140,12 @@ if (isset($_SESSION['user'])) {
                 <button class="settings-btn">
                     <i class="fas fa-cog"></i>
                 </button>
+                <div class="settings-up">
+                        <ul id="settings-up">
+                            <li>Account</li>
+                            <li>Logout</li>
+                        </ul>
+                </div>
             </div>
         </aside>
 
@@ -173,8 +179,8 @@ if (isset($_SESSION['user'])) {
                 </div>
             </div>
         </main>
-        <div class="note-lists" id="note-lists">
-            <ul class="notes-list">
+        <div class="note-lists">
+            <ul class="notes-list" id="note-lists">
                 <li>
                     <h1>Yes I love notes</h1>
                     <p>Do you love notes?</p>
@@ -190,6 +196,7 @@ if (isset($_SESSION['user'])) {
                     
         </div>
     </div>
-    <script src="./JS/user_controller.js"></script>
+    <script type="module" src="./JS/user_controller.js"></script>
+    <script type="module" src="./JS/lists.js"></script>
 </body>
 </html>

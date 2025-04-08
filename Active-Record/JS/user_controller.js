@@ -1,11 +1,13 @@
 let note_title = document.getElementById("note-title");
+const currentDate = new Date();
 let note_content = document.getElementById("note-content");
 const NewNoteButton = document.getElementById("new-note-btn");
 const noteList = document.getElementById("note-lists");
 const mainContent = document.getElementById("main-content");
 const allNotes = document.getElementById("all-notes");
 const saveButton = document.getElementById("save-button"); // work on using the saveButton
-let newFlag = false; /// work on using the flag for new Notes;
+const NoteEdited = document.getElementById("note-edited");
+let newFlag = true; /// work on using the flag for new Notes;
 
 function getCookie(name) {
     const value = `; ${document.cookie}`;  // add a semicolon for easier parsing
@@ -18,6 +20,7 @@ function getCookie(name) {
 
 
 let user_id = getCookie("user_id");
+export {user_id};
 
 
 class Note {
@@ -31,8 +34,8 @@ class Note {
     _is_garbage;
 
     constructor(){
-        const currentDate = new Date();
         this._create_time = currentDate.toISOString().slice(0, 19).replace('T', '');
+        this._note_id = crypto.randomUUID();
 
     }
 
@@ -79,39 +82,70 @@ class Note {
     }
 }
 
-
 NewNoteButton.addEventListener("click", function() {
     noteList.style.display = "none";
     mainContent.style.display = "flex";
-    let note = new Note();
     // Clear the input fields
     note_title.value = "";
     note_content.value = "";
-
+    newFlag = true;
     // Create a new Note object and populate it with user input
-    note.title = note_title.value;
-    note.note = note_content.value;
-    note.create_time = new Date(); // Assuming you have this in your class
-
-    // Send to server
-    fetch("dsp.php", {
-        method: "POST",
-        headers: {
-            'Content-Type': "application/x-www-form-urlencoded"
-        },
-        body:
-            "action=addPost" +
-            "&note_title=" + encodeURIComponent(note.title) +
-            "&note_content=" + encodeURIComponent(note.note) +
-            "&note_created=" + encodeURIComponent(note.create_time) + 
-            "&user_id=" + user_id
-    })
-    .then(response => response.text())
-    .then(data => console.log("Server response:", data))
-    .catch(error => console.error("Error:", error));
+    
 });
 
 
+saveButton.addEventListener("click", function(){
+    let note = new Note();
+    note.title = note_title.value;
+    note_title.dataset.noteId = note.note_id;
+    note.note = note_content.value;
+    note.create_time = new Date(); // Assuming you have this in your class
+    console.log(note_title.dataset.noteId);
+    if(newFlag){
+        fetch("dsp.php", {
+            method: "POST",
+            headers: {
+                'Content-Type': "application/x-www-form-urlencoded"
+            },
+            body:
+                "action=addPost" +
+                "&note_id=" + encodeURIComponent(note.note_id) +
+                "&note_title=" + encodeURIComponent(note.title) +
+                "&note_content=" + encodeURIComponent(note.note) +
+                "&note_created=" + encodeURIComponent(note.create_time) + 
+                "&user_id=" + user_id
+        })
+        .then(response => response.text())
+        .then(data => console.log("Server response:", data))
+        .catch(error => console.error("Error:", error));
+        newFlag = false;
+    }
+    else {
+        note.title = note_title.value;
+        note.note = note_content.value;
+        note.edit_time = currentDate.toISOString().slice(0, 19).replace('T', ' ');
+        fetch("dsp.php", {
+            method:"PUT",
+            headers:{
+                'Content-Type':"application/x-www-form-urlencoded"
+            },
+            body:
+                "action=updateNote" + 
+                "&note_id=" + encodeURIComponent(note.note_id) +
+                "&note_title=" + encodeURIComponent(note.title) + 
+                "&note_content=" + encodeURIComponent(note.note)
+
+
+        })
+        .then(response => response.text())
+        .then(data => {
+            console.log("server response", data);
+            NoteEdited.innerText = "Edited: " + note.edit_time;
+
+        })
+
+    }
+})
 
 allNotes.addEventListener("click", function(){
     mainContent.style.display = "none";
