@@ -142,8 +142,13 @@ if (isset($_SESSION['user'])) {
                 </button>
                 <div class="settings-up">
                         <ul id="settings-up">
-                            <li>Account</li>
-                            <li>Logout</li>
+                            <li><button>Account</button></li>
+                            <li>
+                                <form action="processor.php" method="POST">
+                                    <input type="hidden" name="action" value="logout">
+                                    <input type="submit" value="logout">
+                                </form>
+                            </li>
                         </ul>
                 </div>
             </div>

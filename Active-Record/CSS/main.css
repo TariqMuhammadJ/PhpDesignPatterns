@@ -500,8 +500,43 @@ body {
 
 .settings-up{
     position:absolute;
-    top:-100%;
+    top:-65%;
     right:0;
-    width: auto;
-    border:2px solid black;
+    width: 65%;
+    box-sizing: border-box;
+    background-color: var(--sidebar-bg);
+    border-radius: var(--border-radius-md);
+}
+
+.settings-up ul{
+    list-style-type: none;
+    top:0;
+    width: 100%;
+}
+
+.settings-up ul li{
+    width: 100%;
+    font-family: var(--font-family);
+    font-size: var(--font-size-lg);
+}
+
+.settings-up ul li:hover{
+    background-color: var(--note-hover);
+    border:var(--border-color);
+    cursor: pointer;
+}
+
+.settings-up button{
+    width:100%;
+}
+
+.settings-up button:hover{
+    border:1px solid var(--primary-color);
+}
+
+.settings-up input{
+    width:100%;
+}
+.settings-up input:hover{
+    border:1px solid var(--primary-color);
 }
