@@ -1,26 +1,35 @@
+import getCookie from './getcookies.js';
 let note_title = document.getElementById("note-title");
 const currentDate = new Date();
 let note_content = document.getElementById("note-content");
+const favoriteBtn = document.getElementById("favorite-btn");
 const NewNoteButton = document.getElementById("new-note-btn");
 const noteList = document.getElementById("note-lists");
 const mainContent = document.getElementById("main-content");
 const allNotes = document.getElementById("all-notes");
 const saveButton = document.getElementById("save-button"); // work on using the saveButton
 const NoteEdited = document.getElementById("note-edited");
+const settingsButton = document.getElementById("settings-button");
+const settings = document.getElementById("settings-up");
 let newFlag = true; /// work on using the flag for new Notes;
-
-function getCookie(name) {
-    const value = `; ${document.cookie}`;  // add a semicolon for easier parsing
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) {
-        return parts.pop().split(';').shift();
-    }
-    return null; // if not found
-}
-
-
 let user_id = getCookie("user_id");
 export {user_id};
+
+let Showflag = true;
+
+let favFlag = false;
+
+settingsButton.addEventListener("click", function(){
+    if(Showflag){
+        settings.style.display="block";
+        Showflag = false;
+    }
+    else{
+        settings.style.display="none";
+        Showflag = true;
+    }
+
+});
 
 
 class Note {
@@ -28,13 +37,12 @@ class Note {
     _note_id;
     _title;
     _note;
-    _create_time;
     _edit_time;
     _is_favourite;
     _is_garbage;
 
     constructor(){
-        this._create_time = currentDate.toISOString().slice(0, 19).replace('T', '');
+        this._edit_time = currentDate.toISOString().slice(0, 19).replace('T', '');
         this._note_id = crypto.randomUUID();
 
     }
@@ -48,9 +56,6 @@ class Note {
     }
 
 
-    get create_time(){
-        return this._create_time;
-    }
 
     // Getter for title
     get title() {
@@ -82,6 +87,11 @@ class Note {
     }
 }
 
+
+// work with the while loop for the NewNoteButton, that is a much better approach, and linkedLists for better navigation
+
+let note = null;
+
 NewNoteButton.addEventListener("click", function() {
     noteList.style.display = "none";
     mainContent.style.display = "flex";
@@ -95,11 +105,10 @@ NewNoteButton.addEventListener("click", function() {
 
 
 saveButton.addEventListener("click", function(){
-    let note = new Note();
+    note = new Note();
     note.title = note_title.value;
     note_title.dataset.noteId = note.note_id;
-    note.note = note_content.value;
-    note.create_time = new Date(); // Assuming you have this in your class
+    note.note = note_content.value; // Assuming you have this in your class
     console.log(note_title.dataset.noteId);
     if(newFlag){
         fetch("dsp.php", {
@@ -112,7 +121,7 @@ saveButton.addEventListener("click", function(){
                 "&note_id=" + encodeURIComponent(note.note_id) +
                 "&note_title=" + encodeURIComponent(note.title) +
                 "&note_content=" + encodeURIComponent(note.note) +
-                "&note_created=" + encodeURIComponent(note.create_time) + 
+                "&note_created=" + encodeURIComponent(note.edit_time) + 
                 "&user_id=" + user_id
         })
         .then(response => response.text())
@@ -123,9 +132,8 @@ saveButton.addEventListener("click", function(){
     else {
         note.title = note_title.value;
         note.note = note_content.value;
-        note.edit_time = currentDate.toISOString().slice(0, 19).replace('T', ' ');
         fetch("dsp.php", {
-            method:"PUT",
+            method:"POST",
             headers:{
                 'Content-Type':"application/x-www-form-urlencoded"
             },
@@ -133,7 +141,7 @@ saveButton.addEventListener("click", function(){
                 "action=updateNote" + 
                 "&note_id=" + encodeURIComponent(note.note_id) +
                 "&note_title=" + encodeURIComponent(note.title) + 
-                "&note_content=" + encodeURIComponent(note.note)
+                "&note_content=" + encodeURIComponent(note.note) 
 
 
         })
@@ -152,18 +160,17 @@ allNotes.addEventListener("click", function(){
     noteList.style.display = "flex";
 })
 
-
-// Create a new Note object
-
-
-// Event listener for the title input field
 note_title.addEventListener("change", function() {
-    Note.title = this.value; // Assign input value to the Note object's title
+    note.title = this.value; // Assign input value to the Note object's title
     console.log("Title", Note.title);
 });
 
 // Event listener for the content input field
 note_content.addEventListener("input", function() {
-    Note.note = this.value; // Assign input value to the Note object's content
+    note.note = this.value; // Assign input value to the Note object's content
     console.log("Note : ", Note.note);
 });
+
+favoriteBtn.addEventListener("click", function(){
+    favoriteBtn.style.backgroundColor = "yellow";
+})

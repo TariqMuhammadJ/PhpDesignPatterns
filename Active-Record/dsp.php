@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'addPost'){
 
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'PUT' && $_POST['action'] === 'updateNote'){
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'updateNote'){
     $note_id = $_POST['note_id'];
     $note_title = $_POST['note_title'];
     $note_content = $_POST['note_content'];
@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT' && $_POST['action'] === 'updateNote'){
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === "fetchPosts"){
     $user_id = isset($_GET['user_id']) ? $_GET['user_id'] : null;
-    $notesArray = Notes::get_notes($user_id);
+    $notesArray = Notes::get_notes($user_id, false);
     header('Content-Type: application/json');
     echo $notesArray;
     exit;

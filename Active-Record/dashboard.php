@@ -1,4 +1,5 @@
 <?php
+require './Classes/class-notes.php';
 session_start();
 if (isset($_SESSION['user'])) {
     $user_name;
@@ -19,7 +20,6 @@ if (isset($_SESSION['user'])) {
     
 
 } else {
-    session_start();
     session_unset();
     session_destroy();
     header('Location: index.php');
@@ -63,7 +63,7 @@ if (isset($_SESSION['user'])) {
                     <li class="folder-item active" id="all-notes">
                         <i class="fas fa-book-open"></i>
                         <span>All Notes</span>
-                        <span class="note-count">12</span>
+                        <span class="note-count"><?php echo Notes::$totalNotes; ?></span>
                     </li>
                     <li class="folder-item">
                         <i class="fas fa-star"></i>
@@ -137,11 +137,11 @@ if (isset($_SESSION['user'])) {
                         <span class="account-type">Free Account</span>
                     </div>
                 </div>
-                <button class="settings-btn">
+                <button class="settings-btn" id="settings-button">
                     <i class="fas fa-cog"></i>
                 </button>
-                <div class="settings-up">
-                        <ul id="settings-up">
+                <div class="settings-up" id="settings-up">
+                        <ul>
                             <li><button>Account</button></li>
                             <li>
                                 <form action="processor.php" method="POST">
@@ -158,7 +158,7 @@ if (isset($_SESSION['user'])) {
         <main class="main-content" id="main-content">
             <header class="note-header">
                 <div class="note-actions">
-                    <button class="action-btn favorite-btn">
+                    <button class="action-btn favorite-btn" id="favorite-btn">
                         <i class="far fa-star"></i>
                     </button>
                     <button class="action-btn share-btn">
@@ -184,24 +184,13 @@ if (isset($_SESSION['user'])) {
                 </div>
             </div>
         </main>
-        <div class="note-lists">
-            <ul class="notes-list" id="note-lists">
-                <li>
-                    <h1>Yes I love notes</h1>
-                    <p>Do you love notes?</p>
-                    <span class="note-date">Today at 4:30 pm</span>
-
-                </li>
-                <li>
-                    <h1>How are you doing</h1>
-                    <p>I'm doing well</p>
-                    <span class="note-date">Today at 4:30 pm</span>
-                </li>
+            <ul class="note-lists" id="note-lists">
+                <?php Notes::get_notes($user_id, false); ?>
+               
             </ul>
-                    
-        </div>
     </div>
     <script type="module" src="./JS/user_controller.js"></script>
     <script type="module" src="./JS/lists.js"></script>
+    <script type="module" src="./JS/getcookies.js"></script>
 </body>
 </html>
